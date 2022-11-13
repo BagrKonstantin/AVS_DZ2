@@ -18,7 +18,7 @@ int main() {
     do {
         ch = fgetc(stdin);
         str[i++] = ch;
-    } while (ch != '\0');
+    } while (ch != -1);
     str[i - 1] = '\0';
 
     int n = i;
