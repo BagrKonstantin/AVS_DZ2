@@ -38,8 +38,8 @@ int main(int argc, char * argv[]) {
             }
         }
     }
-    printf(output, "%c", '\n');
-    printf(output, "%s", str);
+    fprintf(output, "%c", '\n');
+    fprintf(output, "%s", str);
     fclose(input);
     fclose(output);
     return 0;
