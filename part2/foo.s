@@ -1,4 +1,4 @@
-	.file	"foo.c"
+.file	"foo.c"
 	.intel_syntax noprefix
 	.text
 	.globl	str
@@ -15,12 +15,12 @@ reverse:
 	endbr64
 	push	rbp
 	mov	rbp, rsp
-	mov	DWORD PTR -20[rbp], edi
-	mov	DWORD PTR -24[rbp], esi
+	mov	DWORD PTR -20[rbp], edi         # l
+	mov	DWORD PTR -24[rbp], esi         # r
 	mov	eax, DWORD PTR -20[rbp]
-	mov	DWORD PTR -4[rbp], eax
+	mov	DWORD PTR -4[rbp], eax          # j = l
 	mov	eax, DWORD PTR -24[rbp]
-	mov	DWORD PTR -8[rbp], eax
+	mov	DWORD PTR -8[rbp], eax          # t = r
 	jmp	.L2
 .L3:
 	mov	eax, DWORD PTR -4[rbp]
@@ -41,13 +41,13 @@ reverse:
 	lea	rcx, str[rip]
 	movzx	edx, BYTE PTR -9[rbp]
 	mov	BYTE PTR [rax+rcx], dl
-	add	DWORD PTR -4[rbp], 1
-	sub	DWORD PTR -8[rbp], 1
+	add	DWORD PTR -4[rbp], 1                # j += 1
+	sub	DWORD PTR -8[rbp], 1                # t -= 1
 .L2:
 	mov	eax, DWORD PTR -4[rbp]
-	cmp	eax, DWORD PTR -8[rbp]
+	cmp	eax, DWORD PTR -8[rbp]              # j < t
 	jl	.L3
-	mov	eax, 0
+	mov	eax, 0                              # return 0
 	pop	rbp
 	ret
 	.size	reverse, .-reverse
@@ -62,7 +62,7 @@ main:
 	push	rbp
 	mov	rbp, rsp
 	sub	rsp, 32
-	mov	DWORD PTR -4[rbp], 0
+	mov	DWORD PTR -4[rbp], 0            # i = 0
 .L6:
 	mov	rax, QWORD PTR stdin[rip]
 	mov	rdi, rax
@@ -117,11 +117,11 @@ main:
 .L9:
 	mov	eax, DWORD PTR -4[rbp]
 	lea	edx, -1[rax]
-	mov	eax, DWORD PTR -12[rbp]
-	mov	esi, edx
-	mov	edi, eax
+	mov	eax, DWORD PTR -12[rbp]         
+	mov	esi, edx                        # r
+	mov	edi, eax                        # l
 	call	reverse
-	mov	DWORD PTR -8[rbp], eax
+	mov	DWORD PTR -8[rbp], eax          # isword = 0
 	jmp	.L10
 .L8:
 	mov	eax, DWORD PTR -4[rbp]
