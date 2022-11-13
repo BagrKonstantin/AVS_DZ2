@@ -15,37 +15,30 @@ reverse:
 	endbr64
 	push	rbp
 	mov	rbp, rsp
-	mov	DWORD PTR -20[rbp], edi         # l
-	mov	DWORD PTR -24[rbp], esi         # r
-	mov	eax, DWORD PTR -20[rbp]
-	mov	DWORD PTR -4[rbp], eax          # j = l
-	mov	eax, DWORD PTR -24[rbp]
-	mov	DWORD PTR -8[rbp], eax          # t = r
 	jmp	.L2
 .L3:
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, edi
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	mov	BYTE PTR -9[rbp], al
-	mov	eax, DWORD PTR -8[rbp]
+	mov	eax, esi
 	cdqe
 	lea	rdx, str[rip]
 	movzx	edx, BYTE PTR [rax+rdx]
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, edi
 	cdqe
 	lea	rcx, str[rip]
 	mov	BYTE PTR [rax+rcx], dl
-	mov	eax, DWORD PTR -8[rbp]
+	mov	eax, esi
 	cdqe
 	lea	rcx, str[rip]
 	movzx	edx, BYTE PTR -9[rbp]
 	mov	BYTE PTR [rax+rcx], dl
-	add	DWORD PTR -4[rbp], 1                # j += 1
-	sub	DWORD PTR -8[rbp], 1                # t -= 1
+	add	edi, 1                              # j += 1
+	sub	esi, 1                              # t -= 1
 .L2:
-	mov	eax, DWORD PTR -4[rbp]
-	cmp	eax, DWORD PTR -8[rbp]              # j < t
+	cmp	edi, esi                            # j < t
 	jl	.L3
 	mov	eax, 0                              # return 0
 	pop	rbp
@@ -62,101 +55,99 @@ main:
 	push	rbp
 	mov	rbp, rsp
 	sub	rsp, 32
-	mov	DWORD PTR -4[rbp], 0            # i = 0
+	mov	ebx, 0                              #  i = 0
 .L6:
 	mov	rax, QWORD PTR stdin[rip]
 	mov	rdi, rax
 	call	fgetc@PLT
 	mov	BYTE PTR -13[rbp], al
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	lea	edx, 1[rax]
-	mov	DWORD PTR -4[rbp], edx
+	mov	ebx, edx
 	cdqe
 	lea	rcx, str[rip]
 	movzx	edx, BYTE PTR -13[rbp]
 	mov	BYTE PTR [rax+rcx], dl
 	cmp	BYTE PTR -13[rbp], -1
 	jne	.L6
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	sub	eax, 1
 	cdqe
 	lea	rdx, str[rip]
 	mov	BYTE PTR [rax+rdx], 0
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	mov	DWORD PTR -20[rbp], eax
-	mov	DWORD PTR -8[rbp], 0
-	mov	DWORD PTR -4[rbp], 0
+	mov	ecx, 0
+	mov	ebx, 0
 	jmp	.L7
 .L13:
-	cmp	DWORD PTR -8[rbp], 1
+	cmp	ecx, 1
 	jne	.L8
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 64
 	jle	.L9
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 122
 	jg	.L9
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 90
 	jle	.L10
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 96
 	jg	.L10
 .L9:
-	mov	eax, DWORD PTR -4[rbp]
-	lea	edx, -1[rax]
-	mov	eax, DWORD PTR -12[rbp]         
-	mov	esi, edx                        # r
-	mov	edi, eax                        # l
+	mov	eax, ebx
+	lea	esi, -1[rax]                                # r
+	mov	edi, DWORD PTR -12[rbp]                     # l
 	call	reverse
-	mov	DWORD PTR -8[rbp], eax          # isword = 0
+	mov	ecx, eax                                    # isword = 0
 	jmp	.L10
 .L8:
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 64
 	jle	.L11
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 90
 	jle	.L12
 .L11:
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 96
 	jle	.L10
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	cmp	al, 122
 	jg	.L10
 .L12:
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	mov	DWORD PTR -12[rbp], eax
-	mov	DWORD PTR -8[rbp], 1
+	mov	ecx, 1
 .L10:
-	add	DWORD PTR -4[rbp], 1
+	add	ebx, 1
 .L7:
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, ebx
 	cmp	eax, DWORD PTR -20[rbp]
 	jl	.L13
 	mov	edi, 10
