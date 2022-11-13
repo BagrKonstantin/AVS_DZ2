@@ -7,7 +7,7 @@ int main() {
     do {
         ch = fgetc(stdin);
         str[i++] = ch;
-    } while (ch != '\n');
+    } while (ch != -1);
     str[i - 1] = '\0';
 
     int n = i;
@@ -31,6 +31,7 @@ int main() {
             }
         }
     }
+    printf("%c", '\n');
     printf("%s", str);
     return 0;
 }
