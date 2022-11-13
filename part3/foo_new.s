@@ -17,28 +17,28 @@ reverse:
 	mov	rbp, rsp
 	jmp	.L2
 .L3:
-	mov	eax, edi
+	mov	eax, edi                            # j
 	cdqe
 	lea	rdx, str[rip]
 	movzx	eax, BYTE PTR [rax+rdx]
 	mov	BYTE PTR -9[rbp], al
-	mov	eax, esi
+	mov	eax, esi                            # t
 	cdqe
 	lea	rdx, str[rip]
 	movzx	edx, BYTE PTR [rax+rdx]
-	mov	eax, edi
+	mov	eax, edi                            # j
 	cdqe
 	lea	rcx, str[rip]
 	mov	BYTE PTR [rax+rcx], dl
-	mov	eax, esi
+	mov	eax, esi                            # t
 	cdqe
 	lea	rcx, str[rip]
 	movzx	edx, BYTE PTR -9[rbp]
 	mov	BYTE PTR [rax+rcx], dl
-	add	edi, 1                              # j += 1
-	sub	esi, 1                              # t -= 1
+	add	edi, 1                              # j += 1 (l += 1)
+	sub	esi, 1                              # t -= 1 (r -= 1)
 .L2:
-	cmp	edi, esi                            # j < t
+	cmp	edi, esi                            # j < t (по сути тут не используются j и t, вместо них l и r соответсвенно)
 	jl	.L3
 	mov	eax, 0                              # return 0
 	pop	rbp
@@ -61,7 +61,7 @@ main:
 	mov	rdi, rax
 	call	fgetc@PLT
 	mov	BYTE PTR -13[rbp], al
-	mov	eax, ebx
+	mov	eax, ebx                            # i
 	lea	edx, 1[rax]
 	mov	ebx, edx
 	cdqe
@@ -71,17 +71,17 @@ main:
 	cmp	BYTE PTR -13[rbp], -1
 	jne	.L6
 	mov	eax, ebx
-	sub	eax, 1
+	sub	eax, 1                              # i -= 1
 	cdqe
 	lea	rdx, str[rip]
-	mov	BYTE PTR [rax+rdx], 0
-	mov	eax, ebx
+	mov	BYTE PTR [rax+rdx], 0               # str[i] = 0 (в коде это str[i - 1] = '\0';)
+	mov	eax, ebx                            # n = i
 	mov	DWORD PTR -20[rbp], eax
-	mov	ecx, 0
-	mov	ebx, 0
+	mov	ecx, 0                              # isword
+	mov	ebx, 0                              # i = 0
 	jmp	.L7
 .L13:
-	cmp	ecx, 1
+	cmp	ecx, 1                              # if (isword == 1)
 	jne	.L8
 	mov	eax, ebx
 	cdqe
@@ -143,12 +143,12 @@ main:
 .L12:
 	mov	eax, ebx
 	mov	DWORD PTR -12[rbp], eax
-	mov	ecx, 1
+	mov	ecx, 1                                      # isword = 1
 .L10:
-	add	ebx, 1
+	add	ebx, 1                                      # i += 1
 .L7:
 	mov	eax, ebx
-	cmp	eax, DWORD PTR -20[rbp]
+	cmp	eax, DWORD PTR -20[rbp]                     # i < n
 	jl	.L13
 	mov	edi, 10
 	call	putchar@PLT
