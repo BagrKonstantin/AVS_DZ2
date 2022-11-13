@@ -159,10 +159,6 @@ funk:
 	jl	.L13
 	mov	rax, QWORD PTR -48[rbp]
 	mov	rsi, rax
-	mov	edi, 10
-	call	fputc@PLT
-	mov	rax, QWORD PTR -48[rbp]
-	mov	rsi, rax
 	lea	rax, str[rip]
 	mov	rdi, rax
 	call	fputs@PLT

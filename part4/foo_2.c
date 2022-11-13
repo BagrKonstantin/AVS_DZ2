@@ -36,6 +36,5 @@ void funk(FILE* input, FILE* output) {
             }
         }
     }
-    fprintf(output, "%c", '\n');
     fprintf(output, "%s", str);
 }
