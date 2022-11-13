@@ -7,15 +7,15 @@ int main() {
     do {
         ch = fgetc(stdin);
         str[i++] = ch;
-    } while(ch != '\n');
-    str[i-1] = '\0';
+    } while (ch != '\n');
+    str[i - 1] = '\0';
 
     int n = i;
     int isword = 0;
     int l, r;
     for (i = 0; i < n; ++i) {
         if (isword == 1) {
-            if (str[i] < 65) {
+            if (str[i] < 'A' || str[i] > 'z' || (str[i] > 'Z' && str[i] < 'a')) {
                 r = i - 1;
                 isword = 0;
                 for (int j = l, t = r; j < t; ++j, --t) {
@@ -25,7 +25,7 @@ int main() {
                 }
             }
         } else {
-            if (str[i] > 64) {
+            if (str[i] >= 'A' && str[i] <= 'Z' || str[i] >= 'a' && str[i] <= 'z') {
                 l = i;
                 isword = 1;
             }
