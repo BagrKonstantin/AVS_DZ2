@@ -32,7 +32,7 @@ main:
 	cdqe
 	movzx	edx, BYTE PTR -1037[rbp]
 	mov	BYTE PTR -1008[rbp+rax], dl
-	cmp	BYTE PTR -1037[rbp], 10
+	cmp	BYTE PTR -1037[rbp], -1
 	jne	.L2
 	mov	eax, DWORD PTR -1036[rbp]
 	sub	eax, 1
@@ -130,6 +130,8 @@ main:
 	mov	eax, DWORD PTR -1036[rbp]
 	cmp	eax, DWORD PTR -1016[rbp]
 	jl	.L11
+	mov	edi, 10
+	call	putchar@PLT
 	lea	rax, -1008[rbp]
 	mov	rsi, rax
 	lea	rax, .LC0[rip]
